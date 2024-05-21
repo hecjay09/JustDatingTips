@@ -2,20 +2,13 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Date
 
-
 class UserSerializer(serializers.ModelSerializer):
+    gender = serializers.CharField()
     class Meta:
         model = User
         # consider is_superuser as is_male since
         # there's no gender field in user class within django auth models
-        fields = [
-            "id",
-            "first_name",
-            "last_name",
-            "username",
-            "password",
-            "is_superuser",
-        ]
+        fields = ["id", "first_name", "last_name", "username", "email", "password", "gender"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):

@@ -1,27 +1,44 @@
-import { useState } from 'react';
-import {Link} from "react-router-dom"
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../api";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import Loading from "../components/Loading"
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
+
+    try {
+      const response = await api.post("/api/token/", {username, password});
+      localStorage.setItem(ACCESS_TOKEN, response.data.access)
+      localStorage.setItem(REFRESH_TOKEN, response.data.refresh)
+      navigate("/")
+    } catch (err) {
+      alert(err);
+    } finally {
+      setLoading(false);
+    }
+
+    console.log("User Name:", username);
+    console.log("Password:", password);
   };
 
   return (
     <div className="login-page">
-
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Username:</label>
           <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
@@ -37,6 +54,7 @@ const Login = () => {
         </div>
         <button type="submit">Login</button>
       </form>
+      {loading && <Loading />}
       <Link to="/register"> Register </Link>
     </div>
   );

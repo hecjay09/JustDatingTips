@@ -1,8 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
+
 
 # Create your models here.
-
 
 class Date(models.Model):
     fname = models.CharField(max_length=100)

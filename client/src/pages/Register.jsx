@@ -18,7 +18,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/api/user/register", {
+      const response = await api.post("api/user/register/", {
         firstName,
         lastName,
         username,

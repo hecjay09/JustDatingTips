@@ -24,7 +24,6 @@ const Register = () => {
         username,
         email,
         password,
-        gender,
       });
       navigate("/login");
     } catch (err) {
@@ -68,7 +67,7 @@ const Register = () => {
           <label htmlFor="gender">Gender: </label>
           <input
             type="radio"
-            id="fullName"
+            id="male"
             value="male"
             checked={gender === "male"}
             onChange={(e) => setGender(e.target.value)}
@@ -77,7 +76,7 @@ const Register = () => {
           Male
           <input
             type="radio"
-            id="fullName"
+            id="female"
             value="female"
             checked={gender === "female"}
             onChange={(e) => setGender(e.target.value)}
@@ -86,7 +85,7 @@ const Register = () => {
           Female
           <input
             type="radio"
-            id="fullName"
+            id="other"
             value="other"
             checked={gender === "other"}
             onChange={(e) => setGender(e.target.value)}

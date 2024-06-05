@@ -23,8 +23,9 @@ class DateSerializer(serializers.ModelSerializer):
             "fname",
             "age",
             "gender",
-            "dateNum",
+            "dateCount",
             "created_at",
             "tip",
             "dateIdeas",
         ]
+        extra_kwargs = {"author": {"read_only": True}}

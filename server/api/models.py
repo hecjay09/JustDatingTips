@@ -5,10 +5,10 @@ from django.contrib.auth.models import User, AbstractUser
 # Create your models here.
 
 class Date(models.Model):
-    fname = models.CharField(max_length=100)
+    fname = models.CharField()
     age = models.IntegerField()
     gender = models.CharField()
-    dateNum = models.IntegerField()
+    dateCount = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     tip = models.TextField()
     dateIdeas = models.TextField()

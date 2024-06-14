@@ -27,7 +27,7 @@ export default function Home() {
 
     if (isTip) {
       const prompt =
-        "generate 10 tips on the " +
+        "generate 5 best tips on the " +
         date.dateCount +
         ordinal +
         " date with " +
@@ -53,7 +53,7 @@ export default function Home() {
         });
     } else {
       const prompt =
-        "generate 10 cheap dating ideas on the " +
+        "generate 5 best and cheap dating ideas on the " +
         date.dateCount +
         ordinal +
         " date with " +

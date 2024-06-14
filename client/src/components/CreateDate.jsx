@@ -43,16 +43,6 @@ export default function CreateDate() {
       })
       .catch((e) => console.error(e));
 
-    console.log(
-      "fname: " +
-        fname +
-        " age: " +
-        age +
-        " gender: " +
-        gender +
-        " dateCount: " +
-        dateCount
-    );
   };
   return (
     <div>

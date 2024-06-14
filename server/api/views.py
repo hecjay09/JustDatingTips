@@ -15,7 +15,6 @@ class CreateUserView(generics.CreateAPIView):
 
 class CreateDateView(generics.ListCreateAPIView):
     serializer_class = DateSerializer
-    # permission_classes = [IsAuthenticated]
     permission_classes = [IsAuthenticated]
     def get_queryset(self):
         user = self.request.user
@@ -32,6 +31,14 @@ class DeleteDateView(generics.DestroyAPIView):
     serializer_class = DateSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        return Date.objects.filter(author=user)
+    
+class UpdateDateView(generics.UpdateAPIView):
+    serializer_class = DateSerializer
+    permission_classes = [IsAuthenticated]
+    
     def get_queryset(self):
         user = self.request.user
         return Date.objects.filter(author=user)

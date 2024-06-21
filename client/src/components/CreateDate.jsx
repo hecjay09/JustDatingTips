@@ -6,20 +6,7 @@ export default function CreateDate() {
   const [age, setAge] = useState(18);
   const [gender, setGender] = useState("");
   const [dateCount, setDateCount] = useState(1);
-  const [tip, setTip] = useState("Click Generate Button");
-  const [ideas, setIdeas] = useState("Click Generate Button");
-  const [dates, setDates] = useState([]);
 
-  const getDates = () => {
-    api
-      .get("/api/dates/")
-      .then((res) => res.data)
-      .then((data) => {
-        setDates(data);
-        console.log(data);
-      })
-      .catch((err) => alert(err + " -- dates"));
-  };
 
   const createDate = async (e) => {
     e.preventDefault();
@@ -29,8 +16,8 @@ export default function CreateDate() {
         age: age,
         gender: gender,
         dateCount: dateCount,
-        tip: tip,
-        dateIdeas: ideas,
+        tip: "Click Generate Button",
+        dateIdeas: "Click Generate Button",
       })
       .then((res) => {
         console.log(res);
@@ -39,7 +26,6 @@ export default function CreateDate() {
         } else {
           alert("Failed to Create a Date");
         }
-        getDates();
       })
       .catch((e) => console.error(e));
 

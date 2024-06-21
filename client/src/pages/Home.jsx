@@ -1,16 +1,23 @@
 import { useState, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import showdown from "showdown"
 import api from "../api";
+import Loading from "../components/Loading";
 
 export default function Home() {
   const [dates, setDates] = useState([]);
+  const [isLoadingTip, setIsLoadingTip] = useState(false);
+  const [isLoadingIdeas, setIsLoadingIdeas] = useState(false);
   const genAi = new GoogleGenerativeAI(
     "AIzaSyA9xzrUsNQuPzwW45z1-o6jynicjwfEZE0"
   );
-  const model = genAi.getGenerativeModel({ model: "gemini-pro" });
+  const model = genAi.getGenerativeModel({ model: "gemini-1.5-flash" });
   useEffect(() => {
     getDates();
   }, []);
+  const converter = new showdown.Converter()
+
+
 
   const generate = async (e, date, isTip) => {
     e.preventDefault();
@@ -26,8 +33,9 @@ export default function Home() {
     }
 
     if (isTip) {
+      setIsLoadingTip(true);
       const prompt =
-        "generate 5 best tips on the " +
+        "(no title) generate 5 best tips on the " +
         date.dateCount +
         ordinal +
         " date with " +
@@ -38,7 +46,7 @@ export default function Home() {
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const tip = response.text();
-      const res = api
+      api
         .put(`/api/dates/edit/${date.id}/`, {
           fname: date.fname,
           age: date.age,
@@ -51,9 +59,11 @@ export default function Home() {
         .catch((err) => {
           console.error(err);
         });
+      setIsLoadingTip(false);
     } else {
+      setIsLoadingIdeas(true);
       const prompt =
-        "generate 5 best and cheap dating ideas on the " +
+        "generate 5 cheap dating ideas on the " +
         date.dateCount +
         ordinal +
         " date with " +
@@ -64,7 +74,7 @@ export default function Home() {
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const ideas = response.text();
-      const res = api
+      api
         .put(`/api/dates/edit/${date.id}/`, {
           fname: date.fname,
           age: date.age,
@@ -77,6 +87,7 @@ export default function Home() {
         .catch((err) => {
           console.error(err);
         });
+      setIsLoadingIdeas(false);
     }
     getDates();
     getDates();
@@ -115,13 +126,17 @@ export default function Home() {
               <p>{date.gender}</p>
               <p>{date.dateCount}</p>
               <div>
-                <p>{date.tip}</p>{" "}
+                {isLoadingTip === true ? <Loading /> : <div dangerouslySetInnerHTML={{__html: converter.makeHtml(date.tip)}}/>}
                 <button onClick={(e) => generate(e, date, true)}>
                   Generate Date Tips
                 </button>
               </div>
               <div>
-                <p>{date.dateIdeas}</p>{" "}
+                {isLoadingIdeas === true ? (
+                  <Loading />
+                ) : (
+                  <p>{date.dateIdeas}</p>
+                )}
                 <button onClick={(e) => generate(e, date, false)}>
                   Generate Date Ideas
                 </button>
